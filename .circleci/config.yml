@@ -21,7 +21,7 @@ jobs:
       - run:
           name: Upload coverage
           command: |
-            cat coverage/lcov.info | coveralls
+            cat coverage/lcov.info | node_modules/.bin/coveralls
 
 workflows:
   version: 2
