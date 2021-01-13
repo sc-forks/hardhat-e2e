@@ -23,7 +23,9 @@
   "devDependencies": {
     "@nomiclabs/hardhat-truffle5": "^2.0.0",
     "@nomiclabs/hardhat-web3": "^2.0.0",
+    "coveralls": "^3.1.0",
     "hardhat": "^2.0.3",
-    "randomstring": "^1.1.5"
+    "randomstring": "^1.1.5",
+    "solidity-coverage": "git+https://github.com/sc-forks/solidity-coverage.git#498b8cd77051d9695225288c3d0d786f2575d3a7"
   }
 }
