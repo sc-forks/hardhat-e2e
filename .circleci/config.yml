@@ -50,6 +50,8 @@ jobs:
           command: |
             mkdir -p reports
             cp -R /tmp/coverage/* reports
+            cat reports/cov_0.json
+            cat reports/cov_1.json
             ls reports
             npx nyc merge reports coverage.json
             cat coverage.json
