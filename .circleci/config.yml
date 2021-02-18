@@ -25,7 +25,7 @@ jobs:
       - run:
           name: Save coverage
           command: |
-            cp coverage.json /tmp/coverage/cov_$CIRCLE_NODE_INDEX.json
+            cp coverage/coverage-final.json /tmp/coverage/cov_$CIRCLE_NODE_INDEX.json
             chmod -R 777 /tmp/coverage/cov_$CIRCLE_NODE_INDEX.json
       - persist_to_workspace:
           root: /tmp/coverage
@@ -50,8 +50,6 @@ jobs:
           command: |
             mkdir -p reports
             cp -R /tmp/coverage/* reports
-            cat reports/cov_0.json
-            cat reports/cov_1.json
             ls reports
             npx nyc merge reports coverage.json
             cat coverage.json
