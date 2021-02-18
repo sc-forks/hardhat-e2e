@@ -51,8 +51,8 @@ jobs:
             mkdir -p reports
             cp -R /tmp/coverage/* reports
             ls reports
-            npx nyc merge reports reports/coverage.json
-            npx istanbul report --include reports/coverage.json lcov
+            npx nyc merge reports coverage.json
+            npx istanbul report --include coverage.json lcov
       - run:
           name: Upload coverage
           command: |
