@@ -36,9 +36,9 @@ jobs:
     docker:
       - image: circleci/node:12
     steps:
-      - checkout
       - attach_workspace:
           at: /tmp/workspace
+      - checkout
       - run: npm install istanbul-combine-updated
       - run: npm install coveralls
       - run: ls /tmp/workspace
