@@ -43,7 +43,7 @@ jobs:
       - run: ls /tmp/workspace
       - run:
           command: |
-           npx istanbul-combine-updated -p summary -r lcov -r html \
+           npx istanbul-combine-updated -r lcov \
               /tmp/workspace/cov_0.json
               /tmp/workspace/cov_1.json
       - run: ls coverage
