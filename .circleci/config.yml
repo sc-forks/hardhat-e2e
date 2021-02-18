@@ -15,7 +15,7 @@ jobs:
           name: Install dependencies
           command: |
             npm install
-      - run: mkdir -p workspace
+      - run: mkdir -p /workspace
       - run:
           name: Run tests
           command: |
@@ -24,19 +24,19 @@ jobs:
             echo "test files >> ${TEST_FILES}"
             echo "NODE_INDEX >> ${CIRCLE_NODE_INDEX}"
             npx hardhat coverage --testfiles "$TEST_FILES"
-      - run: ls workspace
+      - run: ls /workspace
       - persist_to_workspace:
-          root: workspace
+          root: /workspace
           paths:
-            - cov_${CIRCLE_NODE_INDEX}.json
+            - cov_${CIRCLE_NODE_INDEX}
 
   reportCoverage:
     docker:
       - image: circleci/node:12
     steps:
       - attach_workspace:
-          at: workspace
-      - run: ls workspace
+          at: /workspace
+      - run: ls /workspace
 
 
 
