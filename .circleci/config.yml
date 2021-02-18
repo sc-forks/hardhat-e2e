@@ -50,9 +50,7 @@ jobs:
           command: |
             mkdir -p reports
             cp -R /tmp/coverage/* .
-            npx istanbul-merge --out coverage.json cov_0.json cov_1.json
-            cat coverage.json
-            npx istanbul report --include coverage.json lcov
+            npx istanbul-combine-updated -r lcov cov_0.json cov_1.json
       - run:
           name: Upload coverage
           command: |
