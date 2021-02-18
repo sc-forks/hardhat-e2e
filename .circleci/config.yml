@@ -41,12 +41,9 @@ jobs:
           at: /tmp/workspace
       - checkout
       - run: npm install
-      - run: ls /tmp/workspace
-      - run:
-          command: |
-           npx istanbul-combine-updated -r lcov \
-              /tmp/workspace/cov_0.json
-              /tmp/workspace/cov_1.json
+      - run: cp /tmp/workspace/cov_0.json cov_0.json
+      - run: cp /tmp/workspace/cov_1.json cov_1.json
+      - run: npx istanbul-combine-updated -r lcov cov_0.json cov_1.json
       - run: ls coverage
       - run: ls coverage/lcov-report
       - run: cat coverage/lcov.info
