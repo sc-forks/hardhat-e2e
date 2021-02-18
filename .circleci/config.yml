@@ -24,6 +24,7 @@ jobs:
             echo "test files >> ${TEST_FILES}"
             echo "NODE_INDEX >> ${CIRCLE_NODE_INDEX}"
             npx hardhat coverage --testfiles "$TEST_FILES"
+            cp coverage.json /tmp/workspace/cov_$CIRCLE_NODE_INDEX.json
       - run: ls /tmp/workspace
       - persist_to_workspace:
           root: /tmp/workspace
@@ -39,13 +40,12 @@ jobs:
           at: /tmp/workspace
       - run: npm install istanbul-combine-updated
       - run: npm install coveralls
-      - run: ls /tmp/workspace/cov_0
-      - run: ls /tmp/workspace/cov_1
+      - run: ls /tmp/workspace
       - run:
           command: |
            npx istanbul-combine-updated -p summary -r lcov -r html \
-              /tmp/workspace/cov_0/coverage_final.json \
-              /tmp/workspace/cov_1/coverage_final.json
+              /tmp/workspace/cov_0.json
+              /tmp/workspace/cov_1.json
       - run: ls coverage
       - run: ls coverage/lcov-report
       - run: cat coverage/lcov.info
