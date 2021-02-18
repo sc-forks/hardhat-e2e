@@ -52,6 +52,7 @@ jobs:
             cp -R /tmp/coverage/* reports
             ls reports
             npx nyc merge reports coverage.json
+            cat coverage.json
             npx istanbul report --include coverage.json lcov
       - run:
           name: Upload coverage
