@@ -18,10 +18,11 @@ jobs:
       - run:
           name: Run tests
           command: |
-            TEST_FILES="$(circleci tests glob "./test/**/*.js" | circleci tests split --split-by=timings)"
+            TEST_FILES="{$(circleci tests glob "./test/**/*.js" | \
+             circleci tests split --split-by=timings | xargs | sed -e 's/ /,/g')}"
             echo "test files >> ${TEST_FILES}"
             echo "NODE_INDEX >> ${CIRCLE_NODE_INDEX}"
-            npx hardhat coverage --testfiles ${TEST_FILES}
+            npx hardhat coverage --testfiles "$TEST_FILES"
   coverage:
     docker:
       - image: circleci/node:12
