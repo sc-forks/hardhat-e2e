@@ -28,7 +28,8 @@ jobs:
       - persist_to_workspace:
           root: /tmp/workspace
           paths:
-            - cov_${CIRCLE_NODE_INDEX}
+            - cov_0
+            - cov_1
 
   reportCoverage:
     docker:
