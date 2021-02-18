@@ -25,13 +25,13 @@ jobs:
       - run:
           name: Save coverage
           command: |
-            cp coverage/coverage-final.json /tmp/coverage/cov_$CIRCLE_NODE_INDEX.json
-            chmod -R 777 /tmp/coverage/cov_$CIRCLE_NODE_INDEX_a.json
+            cp coverage.json /tmp/coverage/cov_$CIRCLE_NODE_INDEX.json
+            chmod -R 777 /tmp/coverage/cov_$CIRCLE_NODE_INDEX.json
       - persist_to_workspace:
           root: /tmp/coverage
           paths:
-            - cov_0_a.json
-            - cov_1_a.json
+            - cov_0.json
+            - cov_1.json
 
   reportCoverage:
     docker:
@@ -49,9 +49,8 @@ jobs:
           name: Combine coverage reports
           command: |
             mkdir -p reports
-            cp -R /tmp/coverage/* reports
-            ls reports
-            npx nyc merge reports coverage.json
+            cp -R /tmp/coverage/* .
+            npx istanbul-merge --out coverage.json cov_0.json cov_1.json
             cat coverage.json
             npx istanbul report --include coverage.json lcov
       - run:
