@@ -24,6 +24,7 @@ jobs:
             echo "test files >> ${TEST_FILES}"
             echo "NODE_INDEX >> ${CIRCLE_NODE_INDEX}"
             npx hardhat coverage --testfiles "$TEST_FILES"
+      - run: ls workspace
       - persist_to_workspace:
           root: workspace
           paths:
