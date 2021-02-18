@@ -39,8 +39,7 @@ jobs:
       - attach_workspace:
           at: /tmp/workspace
       - checkout
-      - run: npm install istanbul-combine-updated
-      - run: npm install coveralls
+      - run: npm install
       - run: ls /tmp/workspace
       - run:
           command: |
