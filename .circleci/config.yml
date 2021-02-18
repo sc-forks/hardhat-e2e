@@ -38,7 +38,7 @@ jobs:
       - attach_workspace:
           at: /tmp/workspace
       - run: npm install istanbul-combine-updated
-      - run: istanbul-combine-updated -p summary -r lcov /tmp/workspace/cov_0 tmp/workspace/cov_1
+      - run: npx istanbul-combine-updated -p summary -r lcov /tmp/workspace/cov_0 tmp/workspace/cov_1
       - run: cat coverage/lcov.info | node_modules/.bin/coveralls
   coverage:
     docker:
