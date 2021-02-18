@@ -26,12 +26,12 @@ jobs:
           name: Save coverage
           command: |
             cp coverage/coverage-final.json /tmp/coverage/cov_$CIRCLE_NODE_INDEX.json
-            chmod -R 777 /tmp/coverage/cov_$CIRCLE_NODE_INDEX.json
+            chmod -R 777 /tmp/coverage/cov_$CIRCLE_NODE_INDEX_a.json
       - persist_to_workspace:
           root: /tmp/coverage
           paths:
-            - cov_0.json
-            - cov_1.json
+            - cov_0_a.json
+            - cov_1_a.json
 
   reportCoverage:
     docker:
