@@ -43,10 +43,11 @@ jobs:
       - run: ls /tmp/workspace/cov_1
       - run:
           command: |
-           npx istanbul-combine-updated -p summary -r lcov \
+           npx istanbul-combine-updated -p summary -r lcov -r html \
               /tmp/workspace/cov_0/coverage_final.json \
               /tmp/workspace/cov_1/coverage_final.json
       - run: ls coverage
+      - run: ls coverage/lcov-report
       - run: cat coverage/lcov.info
       - run: cat coverage/lcov.info | node_modules/.bin/coveralls
   coverage:
