@@ -48,9 +48,10 @@ jobs:
       - run:
           name: Combine coverage reports
           command: |
-            cp /tmp/coverage/cov_0.json cov_0.json
-            cp /tmp/coverage/cov_1.json cov_1.json
-            npx istanbul-combine-updated -r lcov cov_0.json cov_1.json
+            mkdir -p reports
+            cp /tmp/coverage/* reports
+            npx nyc merge reports reports/coverage.json
+            npx istanbul report --include reports/coverage.json lcov
       - run:
           name: Upload coverage
           command: |
