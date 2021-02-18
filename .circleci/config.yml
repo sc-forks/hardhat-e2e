@@ -29,8 +29,8 @@ jobs:
       - persist_to_workspace:
           root: /tmp/workspace
           paths:
-            - cov_0
-            - cov_1
+            - cov_0.json
+            - cov_1.json
 
   reportCoverage:
     docker:
