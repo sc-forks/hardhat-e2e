@@ -16,7 +16,6 @@ jobs:
           command: |
             npm install
       - run: mkdir -p /tmp/workspace
-      - run: chmod -R 777 /tmp/workspace
       - run:
           name: Run tests
           command: |
@@ -26,6 +25,7 @@ jobs:
             echo "NODE_INDEX >> ${CIRCLE_NODE_INDEX}"
             npx hardhat coverage --testfiles "$TEST_FILES"
             cp coverage.json /tmp/workspace/cov_$CIRCLE_NODE_INDEX.json
+            chmod -R 777 /tmp/workspace/cov_$CIRCLE_NODE_INDEX.json
       - run: ls /tmp/workspace
       - persist_to_workspace:
           root: /tmp/workspace
@@ -40,8 +40,7 @@ jobs:
       - attach_workspace:
           at: /tmp/workspace
       - checkout
-      - run: npm install istanbul-combine-updated
-      - run: npm install coveralls
+      - run: npm install
       - run: ls /tmp/workspace
       - run:
           command: |
