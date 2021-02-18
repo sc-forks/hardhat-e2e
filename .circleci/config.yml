@@ -39,12 +39,15 @@ jobs:
           at: /tmp/workspace
       - run: npm install istanbul-combine-updated
       - run: npm install coveralls
+      - run: ls /tmp/workspace/cov_0
+      - run: ls /tmp/workspace/cov_1
       - run:
           command: |
            npx istanbul-combine-updated -p summary -r lcov \
               /tmp/workspace/cov_0/coverage_final.json \
               /tmp/workspace/cov_1/coverage_final.json
       - run: ls coverage
+      - run: cat coverage/lcov.info
       - run: cat coverage/lcov.info | node_modules/.bin/coveralls
   coverage:
     docker:
