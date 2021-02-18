@@ -1,6 +1,27 @@
 version: 2.1
 
 jobs:
+  test:
+    docker:
+      - image: circleci/node:12
+    parallelism: 2
+    steps:
+      - checkout
+      - run:
+          name: Delete any old node_modules
+          command: |
+            rm -rf node_modules/
+      - run:
+          name: Install dependencies
+          command: |
+            npm install
+      - run:
+          name: Run tests
+          command: |
+            TEST_FILES="$(circleci tests glob "./test/**/*.js" | circleci tests split --split-by=timings)"
+            echo "test files >> ${TEST_FILES}"
+            echo "NODE_INDEX >> ${CIRCLE_NODE_INDEX}"
+            npx hardhat test ${TEST_FILES}
   coverage:
     docker:
       - image: circleci/node:12
@@ -28,3 +49,4 @@ workflows:
   build:
     jobs:
       - coverage
+      - test
