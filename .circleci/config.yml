@@ -16,6 +16,7 @@ jobs:
           command: |
             npm install
       - run: mkdir -p /tmp/workspace
+      - run: chmod -R 777 /tmp/workspace
       - run:
           name: Run tests
           command: |
@@ -39,7 +40,8 @@ jobs:
       - attach_workspace:
           at: /tmp/workspace
       - checkout
-      - run: npm install
+      - run: npm install istanbul-combine-updated
+      - run: npm install coveralls
       - run: ls /tmp/workspace
       - run:
           command: |
