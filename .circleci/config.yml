@@ -15,20 +15,20 @@ jobs:
           name: Install dependencies
           command: |
             npm install
-      - run: mkdir -p /tmp/workspace
+      - run: mkdir -p /tmp/coverage
       - run:
           name: Run tests
           command: |
             TEST_FILES="{$(circleci tests glob "./test/**/*.js" | \
-             circleci tests split --split-by=timings | xargs | sed -e 's/ /,/g')}"
-            echo "test files >> ${TEST_FILES}"
-            echo "NODE_INDEX >> ${CIRCLE_NODE_INDEX}"
+              circleci tests split --split-by=timings | xargs | sed -e 's/ /,/g')}"
             npx hardhat coverage --testfiles "$TEST_FILES"
-            cp coverage.json /tmp/workspace/cov_$CIRCLE_NODE_INDEX.json
-            chmod -R 777 /tmp/workspace/cov_$CIRCLE_NODE_INDEX.json
-      - run: ls /tmp/workspace
+      - run:
+          name: Save coverage
+          command: |
+            cp coverage.json /tmp/coverage/cov_$CIRCLE_NODE_INDEX.json
+            chmod -R 777 /tmp/coverage/cov_$CIRCLE_NODE_INDEX.json
       - persist_to_workspace:
-          root: /tmp/workspace
+          root: /tmp/coverage
           paths:
             - cov_0.json
             - cov_1.json
@@ -38,16 +38,19 @@ jobs:
       - image: circleci/node:12
     steps:
       - attach_workspace:
-          at: /tmp/workspace
+          at: /tmp/coverage
       - checkout
       - run: npm install
-      - run: cp /tmp/workspace/cov_0.json cov_0.json
-      - run: cp /tmp/workspace/cov_1.json cov_1.json
-      - run: npx istanbul-combine-updated -r lcov cov_0.json cov_1.json
-      - run: ls coverage
-      - run: ls coverage/lcov-report
-      - run: cat coverage/lcov.info
-      - run: cat coverage/lcov.info | node_modules/.bin/coveralls
+      - run:
+        name: Combine coverage reports
+        command: |
+          cp /tmp/coverage/cov_0.json cov_0.json
+          cp /tmp/coverage/cov_1.json cov_1.json
+          npx istanbul-combine-updated -r lcov cov_0.json cov_1.json
+      - run:
+        name: Upload coverage
+        command: |
+          cat coverage/lcov.info | node_modules/.bin/coveralls
   coverage:
     docker:
       - image: circleci/node:12
