@@ -40,6 +40,10 @@ jobs:
       - attach_workspace:
           at: /tmp/coverage
       - checkout
+      - run:
+          name: Delete any old node_modules
+          command: |
+            rm -rf node_modules/
       - run: npm install
       - run:
           name: Combine coverage reports
