@@ -67,6 +67,6 @@ workflows:
     jobs:
       - coverage
       - test
-      - reportCoverage
-        requires:
-            - test
+      - reportCoverage:
+          requires:
+              - test
