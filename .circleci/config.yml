@@ -42,15 +42,15 @@ jobs:
       - checkout
       - run: npm install
       - run:
-        name: Combine coverage reports
-        command: |
-          cp /tmp/coverage/cov_0.json cov_0.json
-          cp /tmp/coverage/cov_1.json cov_1.json
-          npx istanbul-combine-updated -r lcov cov_0.json cov_1.json
+          name: Combine coverage reports
+          command: |
+            cp /tmp/coverage/cov_0.json cov_0.json
+            cp /tmp/coverage/cov_1.json cov_1.json
+            npx istanbul-combine-updated -r lcov cov_0.json cov_1.json
       - run:
-        name: Upload coverage
-        command: |
-          cat coverage/lcov.info | node_modules/.bin/coveralls
+          name: Upload coverage
+          command: |
+            cat coverage/lcov.info | node_modules/.bin/coveralls
   coverage:
     docker:
       - image: circleci/node:12
