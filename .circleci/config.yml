@@ -21,7 +21,7 @@ jobs:
             TEST_FILES="$(circleci tests glob "./test/**/*.js" | circleci tests split --split-by=timings)"
             echo "test files >> ${TEST_FILES}"
             echo "NODE_INDEX >> ${CIRCLE_NODE_INDEX}"
-            npx hardhat test ${TEST_FILES}
+            npx hardhat coverage --testfiles ${TEST_FILES}
   coverage:
     docker:
       - image: circleci/node:12
