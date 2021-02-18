@@ -10,6 +10,7 @@ contract V8 {
     _;
   }
 
+  // When set is never called with `0`
   function set(uint x)
     public
     checkInput(x)
@@ -17,18 +18,16 @@ contract V8 {
     a = x;
   }
 
+  // When setOR is never called with `2`
   function setOR(uint x)
     public
   {
-    if (
-      x == 1 ||
-      x == 2 ||
-      x == 3
-    ){
+    if (x == 1 || x == 2){
       a = x;
     }
   }
 
+  // When setTernary is only called with `1`
   function setTernary(uint x)
     public
   {

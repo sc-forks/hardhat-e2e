@@ -13,6 +13,7 @@ contract("V8", accounts => {
 
   it("should set when fn contains an OR condition", async () => {
     await v8.setOR(1);
+    await v8.setOR(4);
   });
 
   it("should set when fn contains a ternary conditional", async () => {
