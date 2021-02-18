@@ -49,7 +49,8 @@ jobs:
           name: Combine coverage reports
           command: |
             mkdir -p reports
-            cp /tmp/coverage/* reports
+            cp /tmp/coverage/*.json reports
+            ls reports
             npx nyc merge reports reports/coverage.json
             npx istanbul report --include reports/coverage.json lcov
       - run:
