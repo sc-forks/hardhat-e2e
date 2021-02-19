@@ -65,3 +65,5 @@ cache/
 .DS_Store
 coverage.json
 coverage/
+test-results.xml
+
