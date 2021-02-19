@@ -16,6 +16,7 @@ jobs:
           command: |
             npm install
       - run: mkdir -p /tmp/coverage
+      - run: mkdir ~/junit
       - run:
           name: Run tests
           command: |
@@ -27,8 +28,10 @@ jobs:
           command: |
             cp coverage.json /tmp/coverage/cov_$CIRCLE_NODE_INDEX.json
             chmod -R 777 /tmp/coverage/cov_$CIRCLE_NODE_INDEX.json
+          environment:
+            MOCHA_FILE: ~/junit/test-results.xml
       - store_test_results:
-          path: test-results
+          path: ~/junit
       - persist_to_workspace:
           root: /tmp/coverage
           paths:
