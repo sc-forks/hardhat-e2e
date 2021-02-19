@@ -20,7 +20,7 @@ jobs:
       - run:
           name: Run tests
           command: |
-            TEST_FILES="{$(circleci tests glob "./test/**/*.js" | \
+            TEST_FILES="{$(circleci tests glob "~/test/**/*.js" | \
               circleci tests split --split-by=timings | xargs | sed -e 's/ /,/g')}"
             npx hardhat coverage --testfiles "$TEST_FILES"
       - run:
