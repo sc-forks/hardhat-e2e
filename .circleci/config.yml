@@ -22,7 +22,7 @@ jobs:
           command: |
             echo "working directory = $$CIRCLE_WORKING_DIRECTORY"
             echo "pwd = $PWD"
-            TEST_FILES="{$(circleci tests glob "$CIRCLE_WORKING_DIRECTORY/test/**/*.js" | \
+            TEST_FILES="{$(circleci tests glob "${PWD}/test/**/*.js" | \
               circleci tests split --split-by=timings | xargs | sed -e 's/ /,/g')}"
             npx hardhat coverage --testfiles "$TEST_FILES"
       - run:
