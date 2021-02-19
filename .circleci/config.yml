@@ -27,6 +27,8 @@ jobs:
           command: |
             cp coverage.json /tmp/coverage/cov_$CIRCLE_NODE_INDEX.json
             chmod -R 777 /tmp/coverage/cov_$CIRCLE_NODE_INDEX.json
+      - store_test_results:
+          path: test-results
       - persist_to_workspace:
           root: /tmp/coverage
           paths:
