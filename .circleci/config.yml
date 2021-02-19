@@ -28,8 +28,9 @@ jobs:
           command: |
             cp coverage.json /tmp/coverage/cov_$CIRCLE_NODE_INDEX.json
             chmod -R 777 /tmp/coverage/cov_$CIRCLE_NODE_INDEX.json
-          environment:
-            MOCHA_FILE: ~/junit/test-results.xml
+      - run:
+          command: cp test-results.xml ~/junit/
+          when: always
       - store_test_results:
           path: ~/junit
       - persist_to_workspace:
