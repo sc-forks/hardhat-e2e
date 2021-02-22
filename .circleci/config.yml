@@ -44,7 +44,7 @@ jobs:
   #           - cov_0.json
   #           - cov_1.json
 
-  test:
+  test_a:
     docker:
       - image: circleci/node:12
     parallelism: 2
@@ -77,6 +77,39 @@ jobs:
              - cov_0.json
              - cov_1.json
 
+  test_b:
+    docker:
+      - image: circleci/node:12
+    parallelism: 2
+    steps:
+      - checkout
+      - run:
+          name: Delete any old node_modules
+          command: |
+            rm -rf node_modules/
+      - run:
+          name: Install dependencies
+          command: |
+            npm install
+      - run: mkdir -p ~/tests_b/coverage
+      - run:
+          name: Run tests
+          command: |
+            TEST_FILES="{$(circleci tests glob "./test/**/*.js" | \
+              circleci tests split --split-by=timings | xargs | sed -e 's/ /,/g')}"
+            npx hardhat coverage --testfiles "$TEST_FILES"
+      - run:
+          name: Save coverage
+          command: |
+            cp coverage.json ~/tests_b/coverage/cov_$CIRCLE_NODE_INDEX.json
+            chmod -R 777 ~/tests_b/coverage/cov_$CIRCLE_NODE_INDEX.json
+          when: always
+      - persist_to_workspace:
+           root: ~/tests_b/coverage
+           paths:
+             - cov_0.json
+             - cov_1.json
+
   reportCoverage:
     docker:
       - image: circleci/node:12
@@ -93,7 +126,11 @@ jobs:
           name: Combine coverage reports
           command: |
             mkdir -p reports
+            echo "list tests/coverage"
             ls ~/tests/coverage
+            echo "list tests_b/coverage"
+            ls ~/tests_b/coverage
+
             cp -R ~/tests/coverage/* .
             npx istanbul-combine-updated -r lcov cov_0.json cov_1.json
       - run:
@@ -126,7 +163,9 @@ workflows:
   version: 2
   build:
     jobs:
-      - test
+      - test_a
+      - test_b
       - reportCoverage:
           requires:
-              - test
+              - test_a
+              - test_b
