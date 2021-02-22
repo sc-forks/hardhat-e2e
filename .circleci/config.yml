@@ -58,7 +58,7 @@ jobs:
           name: Install dependencies
           command: |
             npm install
-      - run: mkdir /tmp/tests
+      - run: mkdir -p /tmp/tests
       - run:
           name: Run tests
           command: |
@@ -91,7 +91,7 @@ jobs:
           name: Install dependencies
           command: |
             npm install
-      - run: mkdir /tmp/tests_b
+      - run: mkdir -p /tmp/tests
       - run:
           name: Run tests
           command: |
@@ -101,11 +101,11 @@ jobs:
       - run:
           name: Save coverage
           command: |
-            cp coverage.json /tmp/tests_b/cov_b_$CIRCLE_NODE_INDEX.json
-            chmod -R 777 /tmp/tests_b/cov_b_$CIRCLE_NODE_INDEX.json
+            cp coverage.json /tmp/tests/cov_b_$CIRCLE_NODE_INDEX.json
+            chmod -R 777 /tmp/tests/cov_b_$CIRCLE_NODE_INDEX.json
           when: always
       - persist_to_workspace:
-           root: /tmp/tests_b
+           root: /tmp/tests
            paths:
              - cov_b_0.json
              - cov_b_1.json
@@ -115,7 +115,7 @@ jobs:
       - image: circleci/node:12
     steps:
       - attach_workspace:
-          at: /tmp/coverage
+          at: /tmp/tests
       - checkout
       - run:
           name: Delete any old node_modules
@@ -128,8 +128,6 @@ jobs:
             mkdir -p reports
             echo "list tests"
             ls /tmp/tests
-            echo "list tests_b"
-            ls /tmp/tests_b
 
             cp -R /tmp/tests/* .
             npx istanbul-combine-updated -r lcov cov_0.json cov_1.json
