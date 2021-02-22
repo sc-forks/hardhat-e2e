@@ -105,7 +105,7 @@ jobs:
             chmod -R 777 /tmp/tests_b/cov_b_$CIRCLE_NODE_INDEX.json
           when: always
       - persist_to_workspace:
-           root: tmp/tests_b
+           root: /tmp/tests_b
            paths:
              - cov_b_0.json
              - cov_b_1.json
