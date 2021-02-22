@@ -58,7 +58,7 @@ jobs:
           name: Install dependencies
           command: |
             npm install
-      - run: mkdir -p ~/tests/coverage
+      - run: mkdir -p /tmp/tests
       - run:
           name: Run tests
           command: |
@@ -68,11 +68,11 @@ jobs:
       - run:
           name: Save coverage
           command: |
-            cp coverage.json ~/tests/coverage/cov_$CIRCLE_NODE_INDEX.json
-            chmod -R 777 ~/tests/coverage/cov_$CIRCLE_NODE_INDEX.json
+            cp coverage.json /tmp/tests/cov_$CIRCLE_NODE_INDEX.json
+            chmod -R 777 /tmp/tests/cov_$CIRCLE_NODE_INDEX.json
           when: always
       - persist_to_workspace:
-           root: ~/tests/coverage
+           root: /tmp/tests
            paths:
              - cov_0.json
              - cov_1.json
@@ -91,7 +91,7 @@ jobs:
           name: Install dependencies
           command: |
             npm install
-      - run: mkdir -p ~/tests_b/coverage
+      - run: mkdir -p /tmp/tests_b
       - run:
           name: Run tests
           command: |
@@ -101,11 +101,11 @@ jobs:
       - run:
           name: Save coverage
           command: |
-            cp coverage.json ~/tests_b/coverage/cov_b_$CIRCLE_NODE_INDEX.json
-            chmod -R 777 ~/tests_b/coverage/cov_b_$CIRCLE_NODE_INDEX.json
+            cp coverage.json /tmp/tests_b/cov_b_$CIRCLE_NODE_INDEX.json
+            chmod -R 777 /tmp/tests_b/cov_b_$CIRCLE_NODE_INDEX.json
           when: always
       - persist_to_workspace:
-           root: ~/tests_b/coverage
+           root: tmp/tests_b
            paths:
              - cov_b_0.json
              - cov_b_1.json
@@ -126,12 +126,12 @@ jobs:
           name: Combine coverage reports
           command: |
             mkdir -p reports
-            echo "list tests/coverage"
-            ls ~/tests/coverage
-            echo "list tests_b/coverage"
-            ls ~/tests_b/coverage
+            echo "list tests"
+            ls /tmp/tests
+            echo "list tests_b"
+            ls /tmp/tests_b
 
-            cp -R ~/tests/coverage/* .
+            cp -R /tmp/tests/* .
             npx istanbul-combine-updated -r lcov cov_0.json cov_1.json
       - run:
           name: Upload coverage
