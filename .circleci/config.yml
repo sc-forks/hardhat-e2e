@@ -44,40 +44,40 @@ jobs:
   #           - cov_0.json
   #           - cov_1.json
 
-    test:
-      docker:
-        - image: circleci/node:12
-      parallelism: 2
-      steps:
-        - checkout
-        - run:
-            name: Delete any old node_modules
-            command: |
-              rm -rf node_modules/
-        - run:
-            name: Install dependencies
-            command: |
-              npm install
-        - run: mkdir ~/coverage
-        - run:
-            name: Run tests
-            command: |
-              TEST_FILES="{$(circleci tests glob "./test/**/*.js" | \
-                circleci tests split --split-by=timings | xargs | sed -e 's/ /,/g')}"
-              npx hardhat coverage --testfiles "$TEST_FILES"
-        - run:
-            name: Save coverage
-            command: |
-              cp coverage.json ~/coverage/cov_$CIRCLE_NODE_INDEX.json
-              chmod -R 777 ~/coverage/cov_$CIRCLE_NODE_INDEX.json
-            when: always
-        - store_test_results:
-            path: ~/coverage
-        # - persist_to_workspace:
-        #     root: /tmp/coverage
-        #     paths:
-        #       - cov_0.json
-        #       - cov_1.json
+  test:
+    docker:
+      - image: circleci/node:12
+    parallelism: 2
+    steps:
+      - checkout
+      - run:
+          name: Delete any old node_modules
+          command: |
+            rm -rf node_modules/
+      - run:
+          name: Install dependencies
+          command: |
+            npm install
+      - run: mkdir ~/coverage
+      - run:
+          name: Run tests
+          command: |
+            TEST_FILES="{$(circleci tests glob "./test/**/*.js" | \
+              circleci tests split --split-by=timings | xargs | sed -e 's/ /,/g')}"
+            npx hardhat coverage --testfiles "$TEST_FILES"
+      - run:
+          name: Save coverage
+          command: |
+            cp coverage.json ~/coverage/cov_$CIRCLE_NODE_INDEX.json
+            chmod -R 777 ~/coverage/cov_$CIRCLE_NODE_INDEX.json
+          when: always
+      - store_test_results:
+          path: ~/coverage
+      # - persist_to_workspace:
+      #     root: /tmp/coverage
+      #     paths:
+      #       - cov_0.json
+      #       - cov_1.json
 
   reportCoverage:
     docker:
