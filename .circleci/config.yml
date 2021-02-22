@@ -1,48 +1,83 @@
 version: 2.1
 
 jobs:
-  test:
-    docker:
-      - image: circleci/node:12
-    parallelism: 2
-    steps:
-      - checkout
-      - run:
-          name: Delete any old node_modules
-          command: |
-            rm -rf node_modules/
-      - run:
-          name: Install dependencies
-          command: |
-            npm install
-      - run: mkdir -p /tmp/coverage
-      - run: mkdir ~/junit
-      - run:
-          name: Run tests
-          command: |
-            echo $(circleci tests glob "${PWD}/test/**/*.spec.js" | \
-              circleci tests split --split-by=timings)
-            echo "working directory = $CIRCLE_WORKING_DIRECTORY"
-            echo "pwd = $PWD"
-            TEST_FILES="{$(circleci tests glob "${PWD}/test/**/*.spec.js" | \
-              circleci tests split --split-by=timings | xargs | sed -e 's/ /,/g')}"
-            echo "test files = $TEST_FILES"
-            npx hardhat coverage --testfiles "$TEST_FILES"
-      - run:
-          name: Save coverage
-          command: |
-            cp coverage.json /tmp/coverage/cov_$CIRCLE_NODE_INDEX.json
-            chmod -R 777 /tmp/coverage/cov_$CIRCLE_NODE_INDEX.json
-      - run:
-          command: cp test-results.xml ~/junit/
-          when: always
-      - store_test_results:
-          path: ~/junit
-      - persist_to_workspace:
-          root: /tmp/coverage
-          paths:
-            - cov_0.json
-            - cov_1.json
+  # test:
+  #   docker:
+  #     - image: circleci/node:12
+  #   parallelism: 2
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Delete any old node_modules
+  #         command: |
+  #           rm -rf node_modules/
+  #     - run:
+  #         name: Install dependencies
+  #         command: |
+  #           npm install
+  #     - run: mkdir -p /tmp/coverage
+  #     - run: mkdir ~/junit
+  #     - run:
+  #         name: Run tests
+  #         command: |
+  #           echo $(circleci tests glob "${PWD}/test/**/*.spec.js" | \
+  #             circleci tests split --split-by=timings)
+  #           echo "working directory = $CIRCLE_WORKING_DIRECTORY"
+  #           echo "pwd = $PWD"
+  #           TEST_FILES="{$(circleci tests glob "${PWD}/test/**/*.spec.js" | \
+  #             circleci tests split --split-by=timings | xargs | sed -e 's/ /,/g')}"
+  #           echo "test files = $TEST_FILES"
+  #           npx hardhat coverage --testfiles "$TEST_FILES"
+  #     - run:
+  #         name: Save coverage
+  #         command: |
+  #           cp coverage.json /tmp/coverage/cov_$CIRCLE_NODE_INDEX.json
+  #           chmod -R 777 /tmp/coverage/cov_$CIRCLE_NODE_INDEX.json
+  #     - run:
+  #         command: cp test-results.xml ~/junit/
+  #         when: always
+  #     - store_test_results:
+  #         path: ~/junit
+  #     - persist_to_workspace:
+  #         root: /tmp/coverage
+  #         paths:
+  #           - cov_0.json
+  #           - cov_1.json
+
+    test:
+      docker:
+        - image: circleci/node:12
+      parallelism: 2
+      steps:
+        - checkout
+        - run:
+            name: Delete any old node_modules
+            command: |
+              rm -rf node_modules/
+        - run:
+            name: Install dependencies
+            command: |
+              npm install
+        - run: mkdir ~/coverage
+        - run:
+            name: Run tests
+            command: |
+              TEST_FILES="{$(circleci tests glob "./test/**/*.js" | \
+                circleci tests split --split-by=timings | xargs | sed -e 's/ /,/g')}"
+              npx hardhat coverage --testfiles "$TEST_FILES"
+        - run:
+            name: Save coverage
+            command: |
+              cp coverage.json ~/coverage/cov_$CIRCLE_NODE_INDEX.json
+              chmod -R 777 ~/coverage/cov_$CIRCLE_NODE_INDEX.json
+            when: always
+        - store_test_results:
+            path: ~/coverage
+        # - persist_to_workspace:
+        #     root: /tmp/coverage
+        #     paths:
+        #       - cov_0.json
+        #       - cov_1.json
 
   reportCoverage:
     docker:
@@ -60,7 +95,8 @@ jobs:
           name: Combine coverage reports
           command: |
             mkdir -p reports
-            cp -R /tmp/coverage/* .
+            ls ~/coverage
+            cp -R ~/coverage/* .
             npx istanbul-combine-updated -r lcov cov_0.json cov_1.json
       - run:
           name: Upload coverage

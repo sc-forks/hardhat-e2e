@@ -3,10 +3,10 @@ require("solidity-coverage");
 
 module.exports = {
   solidity: { version: "0.5.5" },
-  mocha: {
+  /*mocha: {
     reporter: "mocha-multi-reporters",
     reporterOptions: {
       reporterEnabled: "spec, mocha-junit-reporter",
     }
-  }
+  }*/
 };
