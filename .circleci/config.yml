@@ -101,14 +101,14 @@ jobs:
       - run:
           name: Save coverage
           command: |
-            cp coverage.json ~/tests_b/coverage/cov_$CIRCLE_NODE_INDEX.json
-            chmod -R 777 ~/tests_b/coverage/cov_$CIRCLE_NODE_INDEX.json
+            cp coverage.json ~/tests_b/coverage/cov_b_$CIRCLE_NODE_INDEX.json
+            chmod -R 777 ~/tests_b/coverage/cov_b_$CIRCLE_NODE_INDEX.json
           when: always
       - persist_to_workspace:
            root: ~/tests_b/coverage
            paths:
-             - cov_0.json
-             - cov_1.json
+             - cov_b_0.json
+             - cov_b_1.json
 
   reportCoverage:
     docker:
