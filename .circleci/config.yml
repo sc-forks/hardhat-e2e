@@ -58,7 +58,7 @@ jobs:
           name: Install dependencies
           command: |
             npm install
-      - run: mkdir -p /tmp/tests
+      - run: mkdir /tmp/tests
       - run:
           name: Run tests
           command: |
@@ -91,7 +91,7 @@ jobs:
           name: Install dependencies
           command: |
             npm install
-      - run: mkdir -p /tmp/tests_b
+      - run: mkdir /tmp/tests_b
       - run:
           name: Run tests
           command: |
