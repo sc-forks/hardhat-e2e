@@ -59,6 +59,7 @@ jobs:
           command: |
             npm install
       - run: mkdir -p /tmp/tests
+      - run: mkdir ~/junit
       - run:
           name: Run tests
           command: |
@@ -66,10 +67,13 @@ jobs:
               circleci tests split --split-by=timings | xargs | sed -e 's/ /,/g')}"
             npx hardhat coverage --testfiles "$TEST_FILES"
       - run:
-          name: Save coverage
+          name: Save coverage and timings data
           command: |
+            cp test-results.xml ~/junit
             cp coverage.json /tmp/tests/cov_$CIRCLE_NODE_INDEX.json
             chmod -R 777 /tmp/tests/cov_$CIRCLE_NODE_INDEX.json
+      - store_test_results:
+          path: ~/junit
           when: always
       - persist_to_workspace:
            root: /tmp/tests
