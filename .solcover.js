@@ -5,6 +5,9 @@ if (process.env.CI){
 }
 
 module.exports = {
+  // There's a bug in solidity-coverage that causes it not
+  // to inherit the hardhat.config.js mocha config correctly.
+  // Need to duplicate that config here...
   mocha: {
     reporter: "mocha-multi-reporters",
     reporterOptions: {
