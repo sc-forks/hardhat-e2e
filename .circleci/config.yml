@@ -66,8 +66,8 @@ jobs:
             TEST_FILES="{$(circleci tests glob "./test/**/*.js" | \
               circleci tests split --split-by=timings | xargs | sed -e 's/ /,/g')}"
             npx hardhat coverage --testfiles "$TEST_FILES"
-          environment:
-            MOCHA_FILE: ~/junit/test-results.xml
+          # environment:
+          #  MOCHA_FILE: ~/junit/test-results.xml
       - run:
           name: Save coverage and timings data
           command: |
@@ -75,6 +75,7 @@ jobs:
             ls -A
             echo "list ~/junit"
             ls ~/junit -A
+            cp test-results.xml ~/junit
             cp coverage.json /tmp/tests/cov_$CIRCLE_NODE_INDEX.json
             chmod -R 777 /tmp/tests/cov_$CIRCLE_NODE_INDEX.json
       - store_test_results:

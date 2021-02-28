@@ -5,4 +5,10 @@ if (process.env.CI){
 }
 
 module.exports = {
+  mocha: {
+    reporter: "mocha-multi-reporters",
+    reporterOptions: {
+      reporterEnabled: "spec, mocha-junit-reporter",
+    }
+  }
 }
