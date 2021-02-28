@@ -64,7 +64,11 @@ jobs:
           name: Run tests
           command: |
             TEST_FILES="{$(circleci tests glob "${PWD}/test/**/*.js" | \
-              circleci tests split --split-by=timings | xargs | sed -e 's/ /,/g')}"
+              circleci tests split --split-by=timings | \
+              xargs | \
+              sed -e 's/ /,/g' | \
+              sed -e "s|$PWD/||g" )}"
+            echo "TEST_FILES >> $TEST_FILES"
             npx hardhat coverage --testfiles "$TEST_FILES"
           # environment:
           #  MOCHA_FILE: ~/junit/test-results.xml
