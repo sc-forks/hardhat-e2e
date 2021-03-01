@@ -76,7 +76,7 @@ jobs:
           name: Save coverage and timings data
           command: |
             echo "cat saved results"
-            cat $CIRCLE_INTERNAL_TASK_DATA/circle-test-results
+            ls -A $CIRCLE_INTERNAL_TASK_DATA/circle-test-results
             cp test-results.xml ~/junit
             cp coverage.json /tmp/tests/cov_$CIRCLE_NODE_INDEX.json
             chmod -R 777 /tmp/tests/cov_$CIRCLE_NODE_INDEX.json
